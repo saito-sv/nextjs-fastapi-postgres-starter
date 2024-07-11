@@ -1,21 +1,40 @@
-import Image from "next/image";
+"use client";
+import React, { useEffect, useState } from "react";
+import Chat from "./components/Chat";
+import { fetchUser } from "./utils/api";
+import { IoProvider } from "socket.io-react-hook";
 
-type User = {
-  id: string;
-  name: string;
-};
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-export default async function Home() {
-  console.log("fetch", `${apiUrl}/users/me`);
-  const user: User = await fetch(`${apiUrl}/users/me`).then((res) =>
-    res.json()
+const Home: React.FC = () => {
+  const [user, setUser] = useState<{ id: string; username: string } | null>(
+    null,
   );
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await fetchUser();
+        setUser(userData);
+      } catch (error) {
+        console.error("Failed to fetch user", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Hello, {user.name}!
-    </main>
+    <IoProvider>
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-full max-w-2xl border rounded shadow-lg">
+          <Chat userId={Number(user.id)} />
+        </div>
+      </div>
+    </IoProvider>
   );
-}
+};
+
+export default Home;
