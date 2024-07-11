@@ -2,7 +2,7 @@
 name = "backend"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Marlon Monroy"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -11,10 +11,9 @@ fastapi = "*"
 sqlalchemy = "*"
 asyncpg = "*"
 greenlet = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 uvicorn = "*"
-
-
+python-socketio = "*"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
