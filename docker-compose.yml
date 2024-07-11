@@ -8,3 +8,27 @@ services:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "postgres"
     restart: always
+
+  fastapi-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://postgres:postgres@database/postgres"
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - fastapi-app
+    environment:
+      NEXT_PUBLIC_API_URL: "http://fastapi-app:8000"
+    restart: always
