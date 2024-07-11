@@ -16,7 +16,6 @@ fastapi_app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include your routes
 fastapi_app.include_router(chat.router)
 fastapi_app.include_router(user.router)
 

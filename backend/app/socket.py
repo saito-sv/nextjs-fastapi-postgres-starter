@@ -34,7 +34,6 @@ async def message(sid, data):
         user_id = data.get('user_id')
         user_message = data.get('message')
 
-        # Manually obtain a database session
         async with AsyncSession(engine) as db:
             user = await get_user_by_id(db, user_id)
             if user is None:
